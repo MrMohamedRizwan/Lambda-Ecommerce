@@ -15,3 +15,15 @@ exports.userRegisterValidator = [
     //     .isLength({ min: 6 })
     //     .withMessage('Pick at aleast one category')
 ];
+
+exports.userLoginValidator = [
+    check('email')
+        .isEmail()
+        .withMessage('Must be a valid email address'),
+    check('password')
+        .isLength({ min: 6 })
+        .withMessage('Password must be at least 6 characters long'),
+    // check('categories')
+    //     .isLength({ min: 6 })
+    //     .withMessage('Pick at aleast one category')
+];

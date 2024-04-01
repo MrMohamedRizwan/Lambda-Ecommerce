@@ -5,7 +5,15 @@ const bcrypt = require("bcryptjs");
 
 
 const userschema= mongoose.Schema({
-    
+    username: {
+        type: String,
+        trim: true,
+        required: true,
+        max: 12,
+        unique: true,
+        index: true,
+        lowercase: true
+    },
     name: {
         type: String,
         trim: true,
@@ -37,8 +45,9 @@ const userschema= mongoose.Schema({
 
 
 userschema.methods.matchPassword = async function (enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.password);
-  };
+    return await bcrypt.compare(enteredPassword, this.hashed_password);
+};
+
   
   userschema.pre("save", async function (next) {
     if (!this.isModified) {
@@ -48,4 +57,4 @@ const salt = await bcrypt.genSalt(10);
     this.hashed_password = await bcrypt.hash(this.hashed_password, salt);
   });
 
-module.exports = mongoose.model('User', userschema);
+module.exports = mongoose.model('users', userschema);

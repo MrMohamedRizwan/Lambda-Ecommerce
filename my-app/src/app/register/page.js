@@ -1,6 +1,9 @@
 'use client'
 import axios from "axios";
 import React,{ useState } from "react";
+import { ErrorMessage, SuccessMessage } from "../components/messages/alert";
+// import { API } from "../../../config";
+const API="http://localhost:5000/api"
 export default function Home() {
   
     
@@ -9,23 +12,25 @@ export default function Home() {
       console.log(name, email, password)
       setState({...state,buttonText:"Registering"})
       try{
-        const response=await axios.post("http://localhost:5000/api/register",{
+        const response=await axios.post(`${API}/register`,{
           name,email,password
         })
+        console.log(response.data.message)
         setState({...state,name:"",email:"",password:"",buttonText:"submitted",success: response.data.message})
 
       }
-      catch(e)
+      catch(error)
       {
-        console.log(e);
-        setState({...state,buttonText:"error", error: error.response.data.error })
+        console.log(error);
+        setState({...state,buttonText:"error", error: error.response.data.error})
+
       }
     }
 
     const [state, setState] = useState({
       name: 'rizwan',
-      email: 'rizwan@123.com',
-      password: '123',
+      email: 'mrrizwan2207@hgmail.com',
+      password: '123567890',
       error: '',
       success: '',
       buttonText: 'Register',
@@ -86,6 +91,11 @@ export default function Home() {
   }
   return (
     <div>
+    <div className="flex items-center justify-center font-bold">Register</div>
+    <br/>
+    
+    {success && SuccessMessage(success)}
+    {error && ErrorMessage(error)}
     {register()}
     </div>  
     );

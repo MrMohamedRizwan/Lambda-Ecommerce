@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const connect_to_db=async()=>{
     await mongoose
-    .connect(process.env.DATABASE, {
+    .connect("mongodb://127.0.0.1:27017/Ecommerce-NEXT", {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         // useCreateIndex: true,
@@ -18,7 +18,7 @@ module.exports = connect_to_db;
 
 const connectToDB = async () => {
     try{
-    const conn=await mongoose.connect (process.env.MONGO_URI,{    //127.07
+    const conn=await mongoose.connect ("mongodb://127.0.0.1:27017/Ecommerce-NEXT",{    //127.07
     useNewUrlParser : true,useUnifiedTopology :true,
 });
     console.log("MongoDB Connected");
