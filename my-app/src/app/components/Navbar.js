@@ -4,8 +4,12 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 import Image from 'next/image'
+import { isAuth, logout } from '../Helpers/authenticationOfCookies'
 
 const Navbar = () => {
+  const handleLogout = () => {
+    logout();
+  };
 
   
   return (
@@ -20,6 +24,13 @@ const Navbar = () => {
         <div>
             <a href="/register">Register</a>
         </div>
+        {/* {isAuth() && (
+                <div >
+                    <a  onClick={handleLogout}  className="nav-link text-dark">
+                        Logout
+                    </a>
+                </div>
+            )} */}
       </nav>
     </div>
   )

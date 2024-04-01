@@ -106,8 +106,9 @@ const registerActivate=(req,res)=>{
 
 const login=async (req,res)=>{
     try{
-
+        
         const {email,password}=req.body;
+        console.log(email,password);
         const user=await userModel.findOne({email})
         if(!user)
         {
@@ -119,7 +120,7 @@ const login=async (req,res)=>{
         }
         const token=jwt.sign({_id:user._id},process.env.JWT_SECRET,{expiresIn:"7d"});
         const {_id,username,name,role}=user;
-        res.json({token,user:{_id,username,name,email,role}});
+        res.json({token,user:{_id,username,name,email,role},message:"logged in successfully"});
     }
     catch(e){
         console.log(e)

@@ -42,7 +42,7 @@ export default function Home() {
     const handleChange = name => (e) => {
       setState({ ...state, [name]: e.target.value, error: '', success: '',buttonText: 'Register'  })
     }
-    function register ()  {
+  function register ()  {
 
     return(
       <div className=" flex  justify-center items-center h-[90vh]">
