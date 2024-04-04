@@ -1,3 +1,4 @@
+const expressJwt = require('express-jwt');
 const userModel = require("../models/userModel");
 const AWS = require('aws-sdk');
 const jwt=require("jsonwebtoken")
@@ -127,21 +128,57 @@ const login=async (req,res)=>{
         res.json({error:"e"});
     }
 
+};
+// const verifyToken=(req,res)=>{
+//     let token;
+//     token=req.headers.authorization.split(" ")[1];
+//     const decode=jwt.verify(token,process.env.JWT_SECRET);
+//     if(decode)
+//     res.send("Tirr")
+//     else
+//     res.send("No")
+// }
 
-    // .then((err,user)=>{
-    //     console.log(user);
-    //     if(!user||err)
-    //     return res.status(400).json({error:"email not found"});
- 
-    // else
-        // return res.status(200).json({message:"success"})
+const verifyToken=expressJwt({
+        secret: process.env.JWT_SECRET
+    })
 
-    // })
-    // if(!userModel.authenticate(password))
-    // {
-    //     return res.status(400).json({error:"Password not matched"});
-    // }
-    // const token=jwt.sign({_id:userModel._id},process.env.JWT_SECRET,{expiresIn:"7d"});
+const authMiddleware=async(req,res,next)=>{
+    const authId=req.user._id;
+    await userModel.findOne({_id:authId}).then((user,err)=>{
+        if(!user||err)
+        {
+            console.log("error",err);
+            // console.log("user");  
+        return res.status(400).json({error:"User not found"})}
+
+
+        req.profile=user;
+        // storing the user details in req.profile and sennding it to the next function
+
+        next();
+        
+    })
 
 }
-module.exports={registeration,registerActivate,login};
+const adminMiddleware = (req, res, next) => {
+    const adminUserId = req.user._id;
+    userModel.findOne({ _id: adminUserId }).exec((err, user) => {
+        if (err || !user) {
+            console.log(err);
+            return res.status(400).json({
+                error: 'User not found'
+            });
+        }
+
+        if (user.role !== 'admin') {
+            return res.status(400).json({
+                error: 'Admin resource. Access denied'
+            });
+        }
+
+        req.profile = user;
+        next();
+    });
+};
+module.exports={registeration,registerActivate,login,verifyToken,authMiddleware,adminMiddleware};

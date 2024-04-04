@@ -10,6 +10,7 @@ const app = express();
 
 
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 // const userRoutes = require('./routes/user');
 // const categoryRoutes = require('./routes/category');
 // const linkRoutes = require('./routes/link');
@@ -20,12 +21,13 @@ connect_to_db();
 // app middlewares
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.json({ limit: '5mb', type: 'application/json' }));
+// app.use(bodyParser.json({ limit: '5mb', type: 'application/json' }));
 app.use(cors());    
 app.use(cors({ origin: process.env.CLIENT_URL }));
 
 // middlewares
 app.use('/api', authRoutes);
+app.use('/api',userRoutes);
 app.get("/",(req,res)=>{
     res.send("API Running");
 })
