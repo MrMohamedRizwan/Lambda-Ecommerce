@@ -15,9 +15,9 @@ useEffect(() => {
   console.log("useeffect")
   isAuth()&&router.push("/");
   // console.log(isAuth())
-});
+},[]);
 
-  const API="http://localhost:5000/api"
+  const API="/api"
 
   const [state, setState] = useState({
     name: 'rizwan',

@@ -3,7 +3,7 @@ import axios from "axios";
 import React,{ useState } from "react";
 import { ErrorMessage, SuccessMessage } from "../components/messages/alert";
 // import { API } from "../../../config";
-const API="http://localhost:5000/api"
+const API="/api"
 export default function Home() {
   
     

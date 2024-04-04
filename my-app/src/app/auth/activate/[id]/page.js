@@ -33,7 +33,7 @@ export default function tokenverify({params})
   const { name, token, buttonText, success, error } = state;
   useEffect(()=>{
     let token=params.id;
-    console.log(token);
+    // console.log(token);
     const {name} = jwt.decode(token);
     setState({...state,name,token});
 
@@ -43,7 +43,7 @@ export default function tokenverify({params})
     setState({ ...state, buttonText: 'Activating' });
 
         try {
-            const response = await axios.post(`http://localhost:5000/api/register/activate`, { token });
+            const response = await axios.post(`/api/register/activate`, { token });
             // console.log('account activate response', response)
             setState({ ...state, name: '', token: '', buttonText: 'Activated', success: response.data.message });
         } catch (error) {

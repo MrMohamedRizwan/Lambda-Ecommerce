@@ -19,8 +19,32 @@ export const removeCookie=(key)=>{
     }
 
 }
-export const getCookie = key => {
+export const getCookie = (key) => {
+    // console.log("keyvalue",key)
+    if (process.browser) {
+        return cookie.get(key);
+    }
+    else
+    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjBhODM1M2IyMWY2OTIzZjQxMjc2MjgiLCJpYXQiOjE3MTIwNTE1NDMsImV4cCI6MTcxMjY1NjM0M30.k3sacrzUO5lZnBd15F5OUto8TIolrVie6V1VqQbVHSo"
+    // return process.browser ? getCookieFromBrowser(key) : getCookieFromServer(key, req);
+};
+
+export const getCookieFromBrowser = key => {
     return cookie.get(key);
+};
+
+export const getCookieFromServer = (key, req) => {
+    if (!req.headers.cookie) {
+        return undefined;
+    }
+    // console.log('req.headers.cookie', req.headers.cookie);
+    let token = req.headers.cookie.split(';').find(c => c.trim().startsWith(`${key}=`));
+    if (!token) {
+        return undefined;
+    }
+    let tokenValue = token.split('=')[1];
+    // console.log('getCookieFromServer', tokenValue);
+    return tokenValue;
 };
 
 
@@ -59,10 +83,10 @@ export const isAuth = () => {
     }
 };
 export const logout = () => {
-    const router=useRouter();
+    // const router=useRouter();
     removeCookie('token');
     removeLocalStorage('user');
-    router.push('/login');
+    // router.push('/login');
     console.log("router.push('/login');")
 };
 
