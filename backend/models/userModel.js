@@ -32,6 +32,10 @@ const userschema= mongoose.Schema({
         required: true,
     },
     salt:String,
+    pwd:{
+        type:String,
+        required:true,
+    },
     role:{
         type:String,
         default:"subscriber",

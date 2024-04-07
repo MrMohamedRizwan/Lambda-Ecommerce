@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan=require('morgan');
+const color=require('colors');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
@@ -11,11 +12,13 @@ const app = express();
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const Categoryroutes = require('./routes/category');
 // const userRoutes = require('./routes/user');
 // const categoryRoutes = require('./routes/category');
 // const linkRoutes = require('./routes/link');
 
 const connect_to_db = require('./config/db');
+
 connect_to_db();
 
 // app middlewares
@@ -28,6 +31,7 @@ app.use(cors({ origin: process.env.CLIENT_URL }));
 // middlewares
 app.use('/api', authRoutes);
 app.use('/api',userRoutes);
+app.use('/api',Categoryroutes);
 app.get("/",(req,res)=>{
     res.send("API Running");
 })
@@ -36,4 +40,4 @@ app.get("/",(req,res)=>{
 // app.use('/api', linkRoutes);
 
 const port = process.env.PORT || 8000;
-app.listen(port, () => console.log(`API is running on port ${port}`));
+app.listen(port, () => console.log(`API is running on port ${port}`.yellow.bold));

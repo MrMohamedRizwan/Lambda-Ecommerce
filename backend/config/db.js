@@ -4,10 +4,10 @@ const connect_to_db=async()=>{
     .connect(process.env.DATABASE, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        // useCreateIndex: true,
-        // useFindAndModify: false
+        useCreateIndex: true,
+        useFindAndModify: false
     })
-    .then(() => console.log('DB connected'))
+    .then(() => console.log('DB connected'.cyan.underline.bold))
     .catch(err => console.log(err));
 }
 
