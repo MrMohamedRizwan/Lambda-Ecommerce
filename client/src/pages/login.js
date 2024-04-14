@@ -6,6 +6,7 @@ import { authenticate, isAuth } from "../helpers/authenticationOfCookies";
 
 import { useRouter } from 'next/navigation';
 import Navbar from "@/components/Navbar";
+import Link from "next/link";
 const Home=()=>{
   const router = useRouter();
 //   if (!process.browser) {
@@ -62,7 +63,7 @@ const loginpage = () => {
     <>
         <Navbar>
 
-      <div className=" flex  justify-center items-center h-[90vh]">
+      <div className=" flex  justify-center items-center ">
     <div className="border-2 border-black flex  items-center justify-center w-[50%] bg-amber-100">
     <form onSubmit={handleSubmit} className="flex flex-col items-center ">
       <div>Username</div>
@@ -100,10 +101,18 @@ const loginpage = () => {
   )
 }
 
-  return(<div>
-  {success && SuccessMessage(success)}
-    {error && ErrorMessage(error)}
-  {loginpage()}
+  return(
+  <div >
+    {success && SuccessMessage(success)}
+      {error && ErrorMessage(error)}
+<div className="">
+    {loginpage()}
+</div>
+  <div className="flex justify-center">
+    <Link href="/auth/password/forgot">
+      <button className="text-red-500 float-right ">Forgot Password</button>
+    </Link>
+  </div>
   </div>)
 }
 export default Home

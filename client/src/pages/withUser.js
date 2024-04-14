@@ -1,38 +1,48 @@
-// src/middleware/auth.js
-
 import { getCookie } from '@/helpers/authenticationOfCookies';
 import axios from 'axios';
-// import { getCookie } from "../app/Helpers/authenticationOfCookies";
-
+import { Router } from 'next/router';
 
 const WithUser = (Page) => {
     const WithAuthUser = (props) => <Page {...props} />;
-    // console.log("WithAuthUser")
-    WithAuthUser.getInitialProps = async context => {
-        // console.log("token");
-        const token = getCookie('token');
-        // console.log(token)
 
-        try {
-            const response = await axios.get(`http://localhost:5000/api/user`, {
-                headers: {
-                    authorization: `Bearer ${token}`,
-                    contentType: 'application/json'
+    WithAuthUser.getInitialProps = async (context) => {
+        const token = getCookie('token', context.req);
+
+        if (token) {
+            try {
+                const response = await axios.get(`http://localhost:5000/api/user`, {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        contentType: 'application/json'
+                    }
+                });
+
+                const user = response.data.user;
+                return { user: response.data };
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    return { user: 'no user' };
+                } else {
+                    console.error('Network Error:', error.message);
+                    return { error: 'Network Error' };
                 }
-            });
-            
-            return { user: response.data };
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                return { user: 'no user' };
             }
-            throw error; // Rethrow other errors
+        } else {
+            // Redirect to '/' if token is not present
+            if (context.res) {
+                context.res.writeHead(302, {
+                    Location: '/'
+                });
+                context.res.end();
+            } else {
+                // For client-side routing (optional)
+                Router.push('/');
+            }
+            return {};
         }
     };
 
     return WithAuthUser;
 };
-
-
 
 export default WithUser;

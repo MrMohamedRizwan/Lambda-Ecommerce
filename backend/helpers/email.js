@@ -30,7 +30,7 @@ const registerEmailParams = (email,token) => {
 };
 
 const forgotPasswordEmailParams = (email,token) => {
-    const link="http://localhost:3000/auth/activate/"
+    const link="http://localhost:3000/auth/password/reset/"
     return {
         Source: process.env.EMAIL_FROM,
         Destination: {

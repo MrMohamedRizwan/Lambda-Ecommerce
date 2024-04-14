@@ -67,16 +67,20 @@ const  registeration=async(req,res)=>{
 
 }
 
-const registerActivate=(req,res)=>{
+const registerActivate=(req,res,next)=>{
     const {token}=req.body;
     jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, function(err, decoded) {
         if (err) {
             return res.status(401).json({
                 error: 'Expired link. Try again'
             });
+        
         };
     })
         const { name, email, password } = jwt.decode(token);
+        console.log( jwt.decode(token))
+        console.log( name,email,password)
+
         // to create unique username short id is used;
         const username = shortid.generate();
         userModel.findOne({email:email}).then((err,user)=>
@@ -147,7 +151,7 @@ const verifyToken=expressJwt({
 
 const authMiddleware=async(req,res,next)=>{
     const authId=req.user._id;
-    await userModel.findOne({_id:authId}).then((user,err)=>{
+    await userModel.findOne({_id:authId}).select('-hashed_password').then((user,err)=>{
         if(!user||err)
         {
             console.log("error",err);
@@ -230,7 +234,7 @@ const resetPassword=(req, res) => {
                 });
             }
 
-            userModel.findOne({ resetPasswordLink }).exec((err, user) => {
+            userModel.findOne({ resetPasswordLink }).exec((err, user) =>     {
                 if (err || !user) {
                     return res.status(400).json({
                         error: 'Invalid token. Try again'

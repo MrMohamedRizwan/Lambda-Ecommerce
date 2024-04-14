@@ -1,4 +1,3 @@
-'use client'
 // export default withRouter(Activate);
  
 // import { useRouter, usePathname, useSearchParams } from 'next/navigation'
@@ -17,6 +16,8 @@
  
 //   // ...
 // }
+import { withRouter } from 'next/router';
+
 import {useState,useEffect} from 'react';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
@@ -24,10 +25,10 @@ import { ErrorMessage, SuccessMessage } from '@/components/messages/alert';
 
 import { useRouter } from 'next/router';
 
-export default function tokenverify()
+ function tokenverify({router})
 {
-    const router = useRouter();
-  const { id } = router.query; 
+    // const router = useRouter();
+  // const { id } = router.query; 
     const [state, setState] = useState({
       name: '',
       token: '',
@@ -37,12 +38,13 @@ export default function tokenverify()
   });
   const { name, token, buttonText, success, error } = state;
   useEffect(()=>{
-    let token=id;
-    // console.log(token);
+    let token = router.query.id;
+
+    console.log("token val",token);
     const name = jwt.decode(token);
     setState({...state,name,token});
 
-  },[name])
+  },[router])
   const clickSubmit = async e=>{
     e.preventDefault();
     setState({ ...state, buttonText: 'Activating' });
@@ -59,7 +61,14 @@ export default function tokenverify()
   return (<div>
   <div className='flex flex-col items-center justify-center'>
     <div className='text-xl my-[10px]'>
-    Good day {name}, Ready to activate your account?
+    Good day {}, Ready to activate your account?
+    <br/>
+    <br/>
+
+    {JSON.stringify(token)}
+    <br/>
+    <br/>
+
     </div>
     <br />
                     {success && SuccessMessage(success)}
@@ -70,10 +79,12 @@ export default function tokenverify()
   </div>
   </div>
   )
-// return(
-//     <>
-//     njk
-//     {JSON.stringify({id})}
-//     </>
-// )
-}
+  
+  // return(
+    //     <>
+    //     njk
+    //     {JSON.stringify({id})}
+    //     </>
+    // )
+  }
+  export default  withRouter(tokenverify);

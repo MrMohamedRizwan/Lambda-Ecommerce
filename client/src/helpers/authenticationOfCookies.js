@@ -19,17 +19,18 @@ export const removeCookie=(key)=>{
     }
 
 }
-export const getCookie = (key) => {
+export const getCookie = (key,req) => {
     // console.log("keyvalue",key)
-    if (process.browser) {
-        return cookie.get(key);
-    }
-    else
-    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjBhODM1M2IyMWY2OTIzZjQxMjc2MjgiLCJpYXQiOjE3MTIyMDQ4NDksImV4cCI6MTcxMjgwOTY0OX0.AIZ5skO8jtEDJCVXgbJqg6ctqeO5dyE0AS8rxZpgxP8"
-    // return process.browser ? getCookieFromBrowser(key) : getCookieFromServer(key, req);
+    // if (process.browser) {
+    //     return cookie.get(key);
+    // }
+    // else
+    // return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjBhODM1M2IyMWY2OTIzZjQxMjc2MjgiLCJpYXQiOjE3MTIyMDQ4NDksImV4cCI6MTcxMjgwOTY0OX0.AIZ5skO8jtEDJCVXgbJqg6ctqeO5dyE0AS8rxZpgxP8"
+    return process.browser ? getCookieFromBrowser(key) : getCookieFromServer(key, req);
 };
 
 export const getCookieFromBrowser = key => {
+    console.log(key);
     return cookie.get(key);
 };
 

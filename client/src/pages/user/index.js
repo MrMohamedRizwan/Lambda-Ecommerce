@@ -26,7 +26,6 @@ const User = ( {user, userLinks, token }) => {
          {/* <Navbar> */}
 
          <div>{JSON.stringify(user)}</div>
-        ugvhj 
         {/* </Navbar> */}
         </div>}
         </div>
