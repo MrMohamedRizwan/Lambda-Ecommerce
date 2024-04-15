@@ -7,6 +7,7 @@ import { ErrorMessage, SuccessMessage } from '@/components/messages/alert';
 import Navbar from '@/components/Navbar';
 
 const ForgotPassword = () => {
+    const API="/api"
     const [state, setState] = useState({
         email: 'mrrizwan2207@gmail.com',
         buttonText: 'Forgot Password',
@@ -23,7 +24,7 @@ const ForgotPassword = () => {
         e.preventDefault();
         // console.log('post email to ', email);
         try {
-            const response = await axios.put(`http://localhost:5000/api/forgot-password`, { email });
+            const response = await axios.post(`${API}/forgot-password`, {email: email });
             // console.log('FORGOT PASSWORD', response);
             setState({
                 ...state,
@@ -36,7 +37,7 @@ const ForgotPassword = () => {
             setState({
                 ...state,
                 buttonText: 'Forgot Password',
-                // error: e.response.data.error
+                error: e.response.data.error
             });
         }
     };

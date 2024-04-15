@@ -15,9 +15,12 @@ const ses = new AWS.SES();
 const  registeration=async(req,res)=>{
     
     const { name, email, password, categories } = req.body;
-    userModel.findOne({email:email}).then((err,user)=>{
+    userModel.findOne({email}).then((user,err)=>{
         if(user)
-        return res.status(400).json({message:"email is taken"});
+        {
+            console.log(user)
+            return res.status(400).json({error:"email is taken"});
+        }
         // else
         // return res.status(200).json({message:"success"})
 
@@ -191,6 +194,7 @@ const adminMiddleware = (req, res, next) => {
 
 const forgotPassword=(req,res)=>{
     const {email}=req.body;
+    // console.log(email)
     userModel.findOne({email:email}).then((user,err)=>{
         console.log(email)
         if(!user||err)
@@ -210,13 +214,13 @@ const forgotPassword=(req,res)=>{
             sendEmail
                 .then(data => {
                     console.log('ses reset pw success', data);
-                    return res.json({
+                    return res.status(200).json({
                         message: `Email has been sent to ${email}. Click on the link to reset your password`,token:token
                     });
                 })
                 .catch(error => {
                     console.log('ses reset pw failed', error);
-                    return res.json({
+                    return res.status(200).json({
                         message: `We could not vefiry your email. Try later.`
                     });
                 });

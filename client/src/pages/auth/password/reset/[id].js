@@ -8,7 +8,7 @@ import { ErrorMessage, SuccessMessage } from '@/components/messages/alert';
 import Navbar from '@/components/Navbar';
 
 const ResetPassword = ({ router }) => {
-  const API="http://locahost:5000/api"
+  const API="api"
     const [state, setState] = useState({
 
         name: '',
@@ -38,7 +38,7 @@ const ResetPassword = ({ router }) => {
         // console.log('post email to ', email);
         setState({ ...state, buttonText: 'Sending' });
         try {
-            const response = await axios.put(`http://localhost:5000/api/reset-password`, { resetPasswordLink: token, newPassword });            // console.log('FORGOT PASSWORD', response);
+            const response = await axios.put(`${API}/reset-password`, { resetPasswordLink: token, newPassword });            // console.log('FORGOT PASSWORD', response);
             setState({
                 ...state,
                 newPassword: '',

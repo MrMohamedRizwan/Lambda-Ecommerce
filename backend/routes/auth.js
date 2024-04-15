@@ -8,7 +8,7 @@ const router =express.Router();
 router.post('/register',userRegisterValidator,runValidation,registeration)
 router.post('/register/activate',registerActivate);
 router.post('/login',userLoginValidator,runValidation,login);
-router.put('/forgot-password',Forgotpassvalidator,runValidation,forgotPassword);
+router.post('/forgot-password',Forgotpassvalidator,runValidation,forgotPassword);
 router.put('/reset-password',resetPasswordValidator,runValidation,resetPassword);
 
 // userLoginValidator,runValidation,
