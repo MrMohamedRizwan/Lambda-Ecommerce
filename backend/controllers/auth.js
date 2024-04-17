@@ -147,13 +147,20 @@ const login=async (req,res)=>{
 //     else
 //     res.send("No")
 // }
-
+var colors = require('colors/safe');
+const vtoke= (req,res,next)=>{
+    //one from cookies one from headers
+     //console.log("headertoken",req.headers.authorization,"\n")
+     console.log("cookie token",colors.green(req.headers),"\n")
+     next();
+}
 const verifyToken=expressJwt({
         secret: process.env.JWT_SECRET
     })
 
 const authMiddleware=async(req,res,next)=>{
     const authId=req.user._id;
+    console.log("authId",authId);
     await userModel.findOne({_id:authId}).select('-hashed_password').then((user,err)=>{
         if(!user||err)
         {
@@ -269,4 +276,4 @@ const resetPassword=(req, res) => {
     }
 };
 
-module.exports={registeration,registerActivate,login,verifyToken,authMiddleware,adminMiddleware,forgotPassword,resetPassword};
+module.exports={registeration,registerActivate,login,verifyToken,authMiddleware,adminMiddleware,forgotPassword,resetPassword,vtoke};

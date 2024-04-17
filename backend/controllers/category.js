@@ -61,6 +61,7 @@ const create=(req,res)=>{
             console.log("Aws uploadres data",data);
             category.image.url=data.Location
             category.image.key=data.key
+            category.postedBy = req.user._id;
 
 
             category.save((err,success)=>{
@@ -78,7 +79,13 @@ const create=(req,res)=>{
 }
 
 const list=(req,res)=>{
-
+    CategoryModel.find({}).exec((err,data)=>{
+        if(err)
+        {
+            return res.status(400).json({error:"Category not found"});
+        }
+        res.json(data);
+    })
 }
 
 const read=(req,res)=>{

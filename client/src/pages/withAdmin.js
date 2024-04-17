@@ -7,39 +7,49 @@ const WithAdmin=(Page)=>{
     const getapiAdmin = (props) => <Page {...props} />;
     getapiAdmin.getInitialProps = async (context) =>{
         const token = getCookie('token',context.req);
-        console.log("token",token)
+        let userLinks=[];
+        let user=null;
         if(token)
         {
             try {
-                const response = await axios.get(`/api/admin`, {
+                const response = await axios.get(`http://localhost:5000/api/admin`, {
                     headers: {
                         authorization: `Bearer ${token}`,
                         contentType: 'application/json'
-                    }
+                    },
+                    withCredentials: true 
                 });
-                return { user: response.data };
+                user = response.data;
+                userLinks = response.data.links;
+
             } catch (error) 
             {
-                if (error.response.status === 400) {
-                    return { user: 'no user' };
-                    
+                if (error.response && error.response.status === 400) {
+                    user=null;
                 }
-                throw error;
+                // throw error;
             }
         }
-        else {
+        console.log("token",userLinks)
+
+        if(user==null) {
             // Redirect to '/' if token is not present
-            if (context.res) {
                 context.res.writeHead(302, {
                     Location: '/'
                 });
                 context.res.end();
-            } else {
-                // For client-side routing (optional)
-                Router.push('/');
             }
-            return {};
-        }
+             else {
+                // For client-side routing (optional)
+                // Router.push('/');
+                return {
+                    ...(Page.getInitialProps ? await Page.getInitialProps(context) : {}),
+                    user,
+                    token,
+                    userLinks
+                };
+            }
+            
     }
     return getapiAdmin;
 

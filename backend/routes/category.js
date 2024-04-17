@@ -6,8 +6,8 @@ const { create, list, read } = require('../controllers/category');
 const router = express.Router();
 
 router.post('/category',
-// categoryCreateValidator,runValidation,verifyToken,authMiddleware,
-create )
+// categoryCreateValidator,runValidation, this works only for body data not for form data
+verifyToken,authMiddleware,create )
 router.get('/categories', list);
 router.post('/category/:slug', read);
 
@@ -16,4 +16,4 @@ router.post('/category/:slug', read);
 router.get("/cat",(req,res)=>{
     res.send("Category")
 })
-module.exports = router;
+module.exports = router; 

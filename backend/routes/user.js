@@ -1,12 +1,12 @@
 const express=require("express");
 
 const { runValidation } = require("../validators");
-const { authMiddleware, verifyToken, adminMiddleware } = require("../controllers/auth");
+const { authMiddleware, verifyToken, adminMiddleware, vtoke } = require("../controllers/auth");
 const { read } = require("../controllers/user");
 const router =express.Router();
 
 router.get('/user',verifyToken,authMiddleware,read);
-router.get('/admin',verifyToken,adminMiddleware,read);
+router.get('/admin',vtoke,verifyToken,adminMiddleware,read);
 router.get('/',(req,res)=>{
     res.send("User Route");
 });
