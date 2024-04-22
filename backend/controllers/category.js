@@ -84,7 +84,17 @@ const list = (req, res) => {
 	});
 };
 
-const read = (req, res) => {};
+const read = (req, res) => {
+	const{slug}=req.body;
+	const x=CategoryModel.findOne({slug})
+	.exec((err,category)=>{
+		if(err)
+		{
+			return res.status(400).json({error:"could not load category"});
+		}
+		return res.status(200).json({message:category});
+	})
+};
 
 const update = (req, res) => {};
 

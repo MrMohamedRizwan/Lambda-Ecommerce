@@ -96,6 +96,9 @@ const Navbar = ({children}) => {
         <div>
             <a href="/register">Register</a>
         </div>
+        <div>
+            <a href="/user/link/create">Submit a link</a>
+        </div>
         {isAuth() && (
             <div >
                     {isAuth().role}
