@@ -1,10 +1,10 @@
 const CategoryModel = require("../models/category");
-const fs = require('fs');
+const fs = require("fs");
 const slugify = require("slugify");
 const formidable = require("formidable");
 const uuidv4 = require("uuid/v4");
 const AWS = require("aws-sdk");
-var colors = require('colors');
+var colors = require("colors");
 // AWS S3
 const s3 = new AWS.S3({
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -32,7 +32,9 @@ const create = (req, res) => {
 	let form = new formidable.IncomingForm();
 	form.parse(req, (err, fields, files) => {
 		if (err) {
-			return res.status(400).json({ error: "Image could not be uploaded error in parsing" });
+			return res
+				.status(400)
+				.json({ error: "Image could not be uploaded error in parsing" });
 		}
 		const { name, content } = fields;
 		const { image } = files;
@@ -47,11 +49,10 @@ const create = (req, res) => {
 		}
 		const fileStream = fs.createReadStream(image.path);
 
-
 		const params = {
 			Bucket: "ecommercenextnode",
 			// Key: `category/${uuidv4()}/rizwan`,
-            Key: `category/${uuidv4()}img ${image.name}`,
+			Key: `category/${uuidv4()}img ${image.name}`,
 			Body: fileStream,
 			ACL: "public-read",
 			ContenType: image.type,
@@ -67,7 +68,8 @@ const create = (req, res) => {
 			// category.postedBy = req.user._id;
 
 			category.save((err, success) => {
-				if (err) return res.status(400).json({ error: `error saving DB  ${err}` });
+				if (err)
+					return res.status(400).json({ error: `error saving DB  ${err}` });
 				return res.json({ success: success });
 			});
 		});
@@ -85,15 +87,13 @@ const list = (req, res) => {
 };
 
 const read = (req, res) => {
-	const{slug}=req.body;
-	const x=CategoryModel.findOne({slug})
-	.exec((err,category)=>{
-		if(err)
-		{
-			return res.status(400).json({error:"could not load category"});
+	const { slug } = req.body;
+	const x = CategoryModel.findOne({ slug }).exec((err, category) => {
+		if (err) {
+			return res.status(400).json({ error: "could not load category" });
 		}
-		return res.status(200).json({message:category});
-	})
+		return res.status(200).json({ message: category });
+	});
 };
 
 const update = (req, res) => {};
