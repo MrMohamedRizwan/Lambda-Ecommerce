@@ -12,7 +12,7 @@ const WithAdmin=(Page)=>{
         if(token)
         {
             try {
-                const response = await axios.get(`http://localhost:5000/api/admin`, {
+                const response = await axios.get(`http://localhost:5001/api/admin`, {
                     headers: {
                         authorization: `Bearer ${token}`,
                         contentType: 'application/json'

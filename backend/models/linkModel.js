@@ -24,7 +24,7 @@ const linkSchema = new mongoose.Schema(
 		},
 		postedBy: {
 			type: ObjectId,
-			ref: "User",
+			ref: "users",
 		},
 		categories: [
 			{

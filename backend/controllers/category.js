@@ -1,10 +1,13 @@
 const CategoryModel = require("../models/category");
+// const linkModel = require("../models/link");
 const fs = require("fs");
 const slugify = require("slugify");
 const formidable = require("formidable");
 const uuidv4 = require("uuid/v4");
 const AWS = require("aws-sdk");
 var colors = require("colors");
+const linkModel = require("../models/linkModel");
+const userschema = require("../models/userModel");
 // AWS S3
 const s3 = new AWS.S3({
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -65,7 +68,7 @@ const create = (req, res) => {
 			console.log("Aws uploadres data", data);
 			category.image.url = data.Location;
 			category.image.key = data.key;
-			// category.postedBy = req.user._id;
+			category.postedBy = req.user._id;
 
 			category.save((err, success) => {
 				if (err)
@@ -85,15 +88,39 @@ const list = (req, res) => {
 		res.json(data);
 	});
 };
-
+7;
 const read = (req, res) => {
-	const { slug } = req.body;
-	const x = CategoryModel.findOne({ slug }).exec((err, category) => {
-		if (err) {
-			return res.status(400).json({ error: "could not load category" });
-		}
-		return res.status(200).json({ message: category });
-	});
+	const { slug } = req.params;
+	let limit = req.body.limit ? parseInt(req.body.limit) : 10;
+	let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+	console.log(req.params.slug, limit, skip);
+	CategoryModel.findOne({ slug })
+		// .then((category) => {
+		// 	console.log("category", category);
+		// 		})
+		.populate("postedBy", "_id username name")
+		.exec((err, category) => {
+			if (err || !category) {
+				return res.status(400).json({ error: `Category not found ${err}` });
+			}
+			// res.json({ message: category });
+			linkModel
+				.find({ categories: category })
+
+				.populate("postedBy", "_id name username")
+				.populate("categories", "name")
+
+				.sort({ createdAt: -1 })
+				.limit(limit)
+				.skip(skip)
+				.exec((err, links) => {
+					console.log("Links length:", links.length);
+					if (err) {
+						return res.status(400).json({ error: `Links not found ${err}` });
+					}
+					res.json({ category: category, links: links });
+				});
+		});
 };
 
 const update = (req, res) => {};

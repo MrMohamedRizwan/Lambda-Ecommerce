@@ -17,4 +17,17 @@ const create = async (req, res) => {
 		res.json(data);
 	});
 };
-module.exports = { create };
+
+const clickCount = async (req, res) => {
+	const { linkId } = req.body;
+    linkModel.findByIdAndUpdate(linkId, { $inc: { clicks: 1 } }, { upsert: true, new: true }).exec((err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(400).json({
+                error: `Could not update view count ${err}`
+            });
+        }
+        res.json(result);
+    });
+}
+module.exports = { create,clickCount };

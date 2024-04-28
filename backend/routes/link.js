@@ -1,6 +1,6 @@
 const express = require("express");
 const { linkCreateValidator } = require("../validators/link");
-const { create } = require("../controllers/link");
+const { create, clickCount } = require("../controllers/link");
 const { runValidation } = require("../validators");
 const { authMiddleware, verifyToken } = require("../controllers/auth");
 
@@ -18,4 +18,5 @@ router.post(
 router.get("/linkcheck", (req, res) => {
 	res.send("Category");
 });
+router.put("/click-count",clickCount)
 module.exports = router;

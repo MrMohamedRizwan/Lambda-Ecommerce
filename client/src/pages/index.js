@@ -34,7 +34,7 @@ const Home = ({ categories }) => {
 				<br />
 				<br />
 
-				{JSON.stringify(categories)}
+				{/* {JSON.stringify(categories)} */}
 
 				<div className='flex flex-row'>{listCategories()}</div>
 			</Navbar>
@@ -42,7 +42,7 @@ const Home = ({ categories }) => {
 	);
 };
 Home.getInitialProps = async () => {
-	const response = await axios.get("http://localhost:5000/api/categories");
+	const response = await axios.get("http://localhost:5001/api/categories");
 	// const response={};
 	console.log(response.data);
 	return {
