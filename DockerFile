@@ -1,0 +1,6 @@
+FROM node:21-alpine
+WORKDIR /Ecommerce_backend
+COPY ./backend .
+RUN npm install
+EXPOSE 5001
+CMD ["npm","start"]
