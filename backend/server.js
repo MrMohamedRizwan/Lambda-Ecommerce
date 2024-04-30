@@ -1,10 +1,11 @@
 const express = require("express");
+const swaggerUI = require("swagger-ui-express");
 const morgan = require("morgan");
 const color = require("colors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-
+const JSON = require("./swagger-output.json");
 require("dotenv").config();
 
 const app = express();
@@ -18,6 +19,7 @@ const linkRoutes = require("./routes/link");
 // const linkRoutes = require('./routes/link');
 
 const connect_to_db = require("./config/db");
+const swaggerJSDoc = require("swagger-jsdoc");
 
 connect_to_db();
 
@@ -51,6 +53,12 @@ app.get("/check-cookie", (req, res) => {
 	} else {
 		res.send("Token not found");
 	}
+});
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(JSON));
+
+app.get("/swagger-json", (req, res) => {
+	res.setHeader("Content-Type", "application/json");
+	res.send(JSON);
 });
 
 const port = process.env.PORT || 8000;

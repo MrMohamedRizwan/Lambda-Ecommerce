@@ -17,16 +17,18 @@ services:
       - "5001:5001"
     depends_on:
       - mongodb
-
-  node_js_frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile_frontend
-    container_name: nodejs_app_frontend
-    ports:
-      - "3000:3000"
-    depends_on:
+    links:
       - mongodb
+
+  # node_js_frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile_frontend
+  #   container_name: nodejs_app_frontend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - mongodb
 
 volumes:
   mongodb_data:
