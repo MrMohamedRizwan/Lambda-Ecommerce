@@ -23,7 +23,7 @@ const doc = {
 		title: "Whatsapp Monitoring",
 		description: "Monitor whatsapp groups",
 	},
-	host: "localhost:3000",
+	host: "localhost:5001",
 };
 
 const outputFile = "./swagger-output.json";
