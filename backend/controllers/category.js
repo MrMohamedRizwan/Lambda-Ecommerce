@@ -58,7 +58,7 @@ const create = (req, res) => {
 			Key: `category/${uuidv4()}img ${image.name}`,
 			Body: fileStream,
 			ACL: "public-read",
-			ContenType: image.type,
+			ContentType: image.type,
 		};
 
 		s3.upload(params, function (err, data) {
@@ -123,7 +123,71 @@ const read = (req, res) => {
 		});
 };
 
-const update = (req, res) => {};
+const update = (req, res) => {
+	const { slug } = req.params;
+	// const { name, image, content } = req.body;
+	let form = new formidable.IncomingForm();
+	form.parse(req, (err, fields, files) => {
+		if (err) {
+			return res
+				.status(400)
+				.json({ error: "Image could not be uploaded error in parsing" });
+		}
+		const { name, content } = fields;
+		// console.log(name, content);
+
+		const { image } = files;
+		CategoryModel.findOneAndUpdate({ slug }, { name, content }, { new: true }).exec(
+			(err, updated) => {
+				console.log("updated", updated);
+				if (err || !updated) {
+					return res.status(400).json({ error: "Category not updated" });
+				}
+				if (image) {
+					const fileStream = fs.createReadStream(image.path);
+
+					const deleteparams = {
+						Bucket: "ecommercenextnode",
+						Key: `${updated.image.key}`,
+					};
+					s3.deleteObject(deleteparams, function (err, data) {
+						if (err) console.log("S3 DELETE ERROR DUING UPDATE", err);
+						else console.log("S3 DELETED DURING UPDATE", data); // deleted
+					});
+					const params = {
+						Bucket: "ecommercenextnode",
+						// Key: `category/${uuidv4()}/rizwan`,
+						Key: `category/${uuidv4()}img ${image.name}`,
+						Body: fileStream,
+						ACL: "public-read",
+						ContentType: image.type,
+					};
+					s3.upload(params, function (err, data) {
+						if (err) {
+							return res
+								.status(400)
+								.json({ error: `Upload to 3s3 failed ${err}` });
+						}
+						console.log("Aws uploadres data", data);
+						updated.image.url = data.Location;
+						updated.image.key = data.key;
+						updated.postedBy = req.user._id;
+
+						updated.save((err, success) => {
+							if (err)
+								return res
+									.status(400)
+									.json({ error: `error saving DB  ${err}` });
+							return res.json({ success: success });
+						});
+					});
+				} else {
+					res.json(updated);
+				}
+			},
+		);
+	});
+};
 
 const remove = (req, res) => {};
 

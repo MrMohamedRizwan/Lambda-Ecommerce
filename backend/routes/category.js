@@ -2,7 +2,7 @@ const express = require("express");
 const { categoryCreateValidator } = require("../validators/category");
 const { runValidation } = require("../validators");
 const { verifyToken, authMiddleware } = require("../controllers/auth");
-const { create, list, read } = require("../controllers/category");
+const { create, list, read, update } = require("../controllers/category");
 const router = express.Router();
 
 router.post(
@@ -18,11 +18,13 @@ router.post("/category/:slug", read);
 router.get("/cat", (req, res) => {
 	res.send("Category");
 });
-	/*#swagger.summary = 'Add a Group to be monitored'
+
+router.put("/category/:slug", verifyToken, authMiddleware, update);
+/*#swagger.summary = 'Add a Group to be monitored'
   #swagger.description="Add a Group to be monitored"  
 */
 
-	/*
+/*
   #swagger.parameters['group_id'] = {
     in: 'query',
     description: 'Id of a Group',
@@ -31,7 +33,7 @@ router.get("/cat", (req, res) => {
   }
 */
 
-	/* #swagger.responses[200] = { 
+/* #swagger.responses[200] = { 
      description: 'Details of the Group that is added to be monitored',
      schema: {
          type: 'object',
@@ -59,7 +61,7 @@ router.get("/cat", (req, res) => {
 }
 */
 
-	/* #swagger.responses[400] = { 
+/* #swagger.responses[400] = { 
      description: 'Missing Parameter',
      schema: {
          type: 'object',
@@ -78,7 +80,7 @@ router.get("/cat", (req, res) => {
 }
 */
 
-	/* #swagger.responses[500] = { 
+/* #swagger.responses[500] = { 
      description: 'Internal Server Error',
      schema: {
          type: 'object',
@@ -97,7 +99,7 @@ router.get("/cat", (req, res) => {
 }
 */
 
-	/* #swagger.responses[404] = { 
+/* #swagger.responses[404] = { 
      description: 'Invalid GroupId',
      schema: {
          type: 'object',

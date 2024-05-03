@@ -18,12 +18,13 @@
 // module.exports = swaggerSpec;
 
 const swaggerAutogen = require("swagger-autogen");
+const port = process.env.PORT || 5001;
 const doc = {
 	info: {
 		title: "Whatsapp Monitoring",
 		description: "Monitor whatsapp groups",
 	},
-	host: "localhost:5001",
+	host: `localhost:${port}/api`,
 };
 
 const outputFile = "./swagger-output.json";
