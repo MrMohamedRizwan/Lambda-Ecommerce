@@ -1,8 +1,8 @@
 const express = require("express");
 const { categoryCreateValidator } = require("../validators/category");
 const { runValidation } = require("../validators");
-const { verifyToken, authMiddleware } = require("../controllers/auth");
-const { create, list, read, update } = require("../controllers/category");
+const { verifyToken, authMiddleware, adminMiddleware } = require("../controllers/auth");
+const { create, list, read, update, remove } = require("../controllers/category");
 const router = express.Router();
 
 router.post(
@@ -20,6 +20,8 @@ router.get("/cat", (req, res) => {
 });
 
 router.put("/category/:slug", verifyToken, authMiddleware, update);
+router.delete('/category/:slug', verifyToken, adminMiddleware,remove );
+
 /*#swagger.summary = 'Add a Group to be monitored'
   #swagger.description="Add a Group to be monitored"  
 */

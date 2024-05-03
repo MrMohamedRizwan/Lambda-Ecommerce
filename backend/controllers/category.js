@@ -137,59 +137,80 @@ const update = (req, res) => {
 		// console.log(name, content);
 
 		const { image } = files;
-		CategoryModel.findOneAndUpdate({ slug }, { name, content }, { new: true }).exec(
-			(err, updated) => {
-				console.log("updated", updated);
-				if (err || !updated) {
-					return res.status(400).json({ error: "Category not updated" });
-				}
-				if (image) {
-					const fileStream = fs.createReadStream(image.path);
+		CategoryModel.findOneAndUpdate(
+			{ slug },
+			{ name, content },
+			{ new: true },
+		).exec((err, updated) => {
+			console.log("updated", updated);
+			if (err || !updated) {
+				return res.status(400).json({ error: "Category not updated" });
+			}
+			if (image) {
+				const fileStream = fs.createReadStream(image.path);
 
-					const deleteparams = {
-						Bucket: "ecommercenextnode",
-						Key: `${updated.image.key}`,
-					};
-					s3.deleteObject(deleteparams, function (err, data) {
-						if (err) console.log("S3 DELETE ERROR DUING UPDATE", err);
-						else console.log("S3 DELETED DURING UPDATE", data); // deleted
-					});
-					const params = {
-						Bucket: "ecommercenextnode",
-						// Key: `category/${uuidv4()}/rizwan`,
-						Key: `category/${uuidv4()}img ${image.name}`,
-						Body: fileStream,
-						ACL: "public-read",
-						ContentType: image.type,
-					};
-					s3.upload(params, function (err, data) {
-						if (err) {
-							return res
-								.status(400)
-								.json({ error: `Upload to 3s3 failed ${err}` });
-						}
-						console.log("Aws uploadres data", data);
-						updated.image.url = data.Location;
-						updated.image.key = data.key;
-						updated.postedBy = req.user._id;
+				const deleteparams = {
+					Bucket: "ecommercenextnode",
+					Key: `${updated.image.key}`,
+				};
+				s3.deleteObject(deleteparams, function (err, data) {
+					if (err) console.log("S3 DELETE ERROR DUING UPDATE", err);
+					else console.log("S3 DELETED DURING UPDATE", data); // deleted
+				});
+				const params = {
+					Bucket: "ecommercenextnode",
+					// Key: `category/${uuidv4()}/rizwan`,
+					Key: `category/${uuidv4()}img ${image.name}`,
+					Body: fileStream,
+					ACL: "public-read",
+					ContentType: image.type,
+				};
+				s3.upload(params, function (err, data) {
+					if (err) {
+						return res
+							.status(400)
+							.json({ error: `Upload to 3s3 failed ${err}` });
+					}
+					console.log("Aws uploadres data", data);
+					updated.image.url = data.Location;
+					updated.image.key = data.key;
+					updated.postedBy = req.user._id;
 
-						updated.save((err, success) => {
-							if (err)
-								return res
-									.status(400)
-									.json({ error: `error saving DB  ${err}` });
-							return res.json({ success: success });
-						});
+					updated.save((err, success) => {
+						if (err)
+							return res.status(400).json({ error: `error saving DB  ${err}` });
+						return res.json({ success: success });
 					});
-				} else {
-					res.json(updated);
-				}
-			},
-		);
+				});
+			} else {
+				res.json(updated);
+			}
+		});
 	});
 };
 
-const remove = (req, res) => {};
+const remove = (req, res) => {
+	const { slug } = req.params;
+
+	CategoryModel.findOneAndRemove({ slug }).exec((err, data) => {
+		if (err) {
+			return res.status(400).json({
+				error: "Could not delete category",
+			});
+		}
+		const deleteparams = {
+			Bucket: "ecommercenextnode",
+			Key: `${data.image.key}`,
+		};
+		s3.deleteObject(deleteparams, function (err, data) {
+			if (err) console.log("S3 DELETE ERROR DUING UPDATE", err);
+			else console.log("S3 DELETED DURING UPDATE", data); // deleted
+		});
+		res.json({
+			message: "Category deleted successfully",
+		});
+	});
+};
 
 module.exports = {
 	create,
