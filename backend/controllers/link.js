@@ -1,3 +1,4 @@
+const categoryModel = require("../models/category");
 const linkModel = require("../models/linkModel");
 
 const create = async (req, res) => {
@@ -30,4 +31,43 @@ const clickCount = async (req, res) => {
         res.json(result);
     });
 }
-module.exports = { create,clickCount };
+const popular=(req,res)=>{
+	linkModel.find()
+	.populate('postedBy', 'name')
+	// to ort in decreasing order 
+        .sort({ clicks: -1 })
+        .limit(3)
+        .exec((err, links) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Links not found'
+                });
+            }
+            res.json(links);
+        });
+}
+
+
+const popularInSingleCategory=(req,res)=>{
+	const {slug}=req.params;
+	categoryModel.find({slug}).exec((err,category)=>{
+		if (err) {
+            return res.status(400).json({
+                error: 'Could not load categories'
+            });
+        }
+		linkModel.find({categories:category})
+		.sort({ clicks: -1 })
+		.limit(3)
+		.exec((err,links)=>{
+			if (err) {
+				return res.status(400).json({
+					error: 'Links not found'
+				});
+			}
+			res.json(links);
+		})
+	})
+
+}
+module.exports = { create,clickCount ,popular,popularInSingleCategory};
