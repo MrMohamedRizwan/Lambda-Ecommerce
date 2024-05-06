@@ -1,6 +1,6 @@
 const express = require("express");
 const { linkCreateValidator } = require("../validators/link");
-const { create, clickCount, popular } = require("../controllers/link");
+const { create, clickCount, popular, popularInSingleCategory } = require("../controllers/link");
 const { runValidation } = require("../validators");
 const { authMiddleware, verifyToken } = require("../controllers/auth");
 
