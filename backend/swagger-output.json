@@ -1,367 +1,365 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "title": "Whatsapp Monitoring",
-    "description": "Monitor whatsapp groups",
-    "version": "1.0.0"
-  },
-  "host": "localhost:5001/api",
-  "basePath": "/",
-  "schemes": [
-    "http"
-  ],
-  "paths": {
-    "/category": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/categories": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/category/{slug}": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "limit": {
-                  "example": "any"
-                },
-                "skip": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/cat": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/register": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "categories": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "422": {
-            "description": "Unprocessable Entity"
-          }
-        }
-      }
-    },
-    "/register/activate": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "token": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/login": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "422": {
-            "description": "Unprocessable Entity"
-          }
-        }
-      }
-    },
-    "/forgot-password": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "422": {
-            "description": "Unprocessable Entity"
-          }
-        }
-      }
-    },
-    "/reset-password": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "resetPasswordLink": {
-                  "example": "any"
-                },
-                "newPassword": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "422": {
-            "description": "Unprocessable Entity"
-          }
-        }
-      }
-    },
-    "/link": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "example": "any"
-                },
-                "url": {
-                  "example": "any"
-                },
-                "categories": {
-                  "example": "any"
-                },
-                "medium": {
-                  "example": "any"
-                },
-                "type": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "422": {
-            "description": "Unprocessable Entity"
-          }
-        }
-      }
-    },
-    "/linkcheck": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/click-count": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "linkId": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/user": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/admin": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    }
-  }
+	"swagger": "2.0",
+	"info": {
+		"title": "Ecommerce Monitoring",
+		"description": "Monitor whatsapp groups",
+		"version": "1.0.0"
+	},
+	"host": "localhost:5001/api",
+	"basePath": "/",
+	"schemes": ["http"],
+	"paths": {
+		"/category": {
+			"post": {
+				"description": "",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				}
+			}
+		},
+		"/categories": {
+			"get": {
+				"description": "",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				}
+			}
+		},
+		"/category/{slug}": {
+			"post": {
+				"description": "",
+				"parameters": [
+					{
+						"name": "slug",
+						"in": "path",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"limit": {
+									"example": "any"
+								},
+								"skip": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				}
+			}
+		},
+		"/cat": {
+			"get": {
+				"description": "",
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/register": {
+			"post": {
+				"description": "",
+				"parameters": [
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"example": "any"
+								},
+								"email": {
+									"example": "any"
+								},
+								"password": {
+									"example": "any"
+								},
+								"categories": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					}
+				}
+			}
+		},
+		"/register/activate": {
+			"post": {
+				"description": "",
+				"parameters": [
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"token": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				}
+			}
+		},
+		"/login": {
+			"post": {
+				"description": "",
+				"parameters": [
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"email": {
+									"example": "any"
+								},
+								"password": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					}
+				}
+			}
+		},
+		"/forgot-password": {
+			"post": {
+				"description": "",
+				"parameters": [
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"email": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					}
+				}
+			}
+		},
+		"/reset-password": {
+			"put": {
+				"description": "",
+				"parameters": [
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"resetPasswordLink": {
+									"example": "any"
+								},
+								"newPassword": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					}
+				}
+			}
+		},
+		"/link": {
+			"post": {
+				"description": "",
+				"parameters": [
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"title": {
+									"example": "any"
+								},
+								"url": {
+									"example": "any"
+								},
+								"categories": {
+									"example": "any"
+								},
+								"medium": {
+									"example": "any"
+								},
+								"type": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					}
+				}
+			}
+		},
+		"/linkcheck": {
+			"get": {
+				"description": "",
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/click-count": {
+			"put": {
+				"description": "",
+				"parameters": [
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"linkId": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				}
+			}
+		},
+		"/user": {
+			"get": {
+				"description": "",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				}
+			}
+		},
+		"/admin": {
+			"get": {
+				"description": "",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				}
+			}
+		},
+		"/": {
+			"get": {
+				"description": "",
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		}
+	}
 }
