@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const JSON = require("./swagger-output.json");
+const { default: rateLimit } = require("express-rate-limit");
 require("dotenv").config();
 
 const app = express();
@@ -29,7 +30,12 @@ app.use(bodyParser.json());
 // app.use(bodyParser.json({ limit: '5mb', type: 'application/json' }));
 app.use(cors());
 // app.use(cors({ origin: process.env.CLIENT_URL }));
-
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
 // middlewares
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
