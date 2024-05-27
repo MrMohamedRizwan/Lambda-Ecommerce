@@ -1,8 +1,8 @@
 {
 	"swagger": "2.0",
 	"info": {
-		"title": "Ecommerce Monitoring",
-		"description": "Monitor whatsapp groups",
+		"title": "Lambda-Ecommerce",
+		"description": "Documentaion of API's",
 		"version": "1.0.0"
 	},
 	"host": "localhost:5001/api",
