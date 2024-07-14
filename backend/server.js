@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 // app.use(bodyParser.json({ limit: '5mb', type: 'application/json' }));
 app.use(cors());
 // app.use(cors({ origin: process.env.CLIENT_URL }));
-const limiter = rateLimit({
+const limiter = rateLimit({	
 	windowMs: 15 * 60 * 1000, // 15 minutes
 	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
 	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
