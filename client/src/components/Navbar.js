@@ -88,16 +88,16 @@ const Navbar = ({children}) => {
     <div className='pl-[10%] pr-[10%]'>
       <div className=" bg-blue-100 rounded-b-[40px] flex flex-row w-[100%] border-2 border-black justify-around h-[7vh] items-center">
         <div >
-            <a href="/home">Home</a>
+            <Link href="/home">Home</Link>
         </div>
         <div>
-            <a href="/login">Login</a>
+            <Link href="/login">Login</Link>
         </div>
         <div>
-            <a href="/register">Register</a>
+            <Link href="/register">Register</Link>
         </div>
         <div>
-            <a href="/user/link/create">Submit a link</a>
+            <Link href="/user/link/create">Submit a link</Link>
         </div>
         {isAuth() && (
             <div >
