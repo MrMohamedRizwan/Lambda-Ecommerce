@@ -16,68 +16,63 @@ const s3 = new AWS.S3({
 });
 
 const create = (req, res) => {
-	// {// const {name,content}=req.body;
-	// const slug=slugify(name);
-	// const image={
-	//     'url':"https://placehold.co/200x150.png?text=localhost",
-	//     'key':"123"
-	// }
-	// const category=new CategoryModel({name,image:image,content,slug});
-	// category.save((err,data)=>{
-	//     if(err){
-	//         return res.status(400).json({
-	//             error:"Category not created"
-	//         })
-	//     }
-	//     res.json(data);
-	// })}
-
 	let form = new formidable.IncomingForm();
+
 	form.parse(req, (err, fields, files) => {
 		if (err) {
 			return res
 				.status(400)
-				.json({ error: "Image could not be uploaded error in parsing" });
+				.json({ error: "Image could not be uploaded, error in parsing" });
 		}
+
 		const { name, content } = fields;
 		const { image } = files;
 		const slug = slugify(name);
-		// const fileStream = fs.createReadStream(image.path);
-		// console.log("consoled image ",colors.magenta( image));
-		// upload to s3
 
-		let category = new CategoryModel({ name, content, slug });
 		if (image.size > 200000000) {
 			return res.status(400).json({ error: "Reduce the size of the image" });
 		}
-		const fileStream = fs.createReadStream(image.path);
 
+		const fileStream = fs.createReadStream(image.path);
 		const params = {
-			Bucket: "ecommercenextnode",
-			// Key: `category/${uuidv4()}/rizwan`,
-			Key: `category/${uuidv4()}img ${image.name}`,
+			Bucket: "ecommercenextnodee",
+			Key: `category/${uuidv4()}_${image.name}`,
 			Body: fileStream,
 			ACL: "public-read",
 			ContentType: image.type,
 		};
 
-		s3.upload(params, function (err, data) {
-			if (err) {
-				return res.status(400).json({ error: `Upload to 3s3 failed ${err}` });
+		// Attempt to upload to S3
+		s3.upload(params, (err, data) => {
+			let imageUrl = "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg"; // Default image URL
+
+			if (!err) {
+				imageUrl = data.Location; // Use the uploaded image URL if successful
+			} else {
+				console.error(`Upload to S3 failed: ${err.message}`);
 			}
-			console.log("Aws uploadres data", data);
-			category.image.url = data.Location;
-			category.image.key = data.key;
-			category.postedBy = req.user._id;
+
+			let category = new CategoryModel({
+				name,
+				content,
+				slug,
+				image: {
+					url: imageUrl, // Use the image URL (default or S3)
+					key: !err ? data.Key : null, // Set the key only if the upload was successful
+				},
+				postedBy: req.user._id,
+			});
 
 			category.save((err, success) => {
-				if (err)
-					return res.status(400).json({ error: `error saving DB  ${err}` });
-				return res.json({ success: success });
+				if (err) {
+					return res
+						.status(400)
+						.json({ error: `Error saving to DB: ${err.message}` });
+				}
+				return res.json({ success });
 			});
 		});
 	});
-	// res.send("category");
 };
 
 const list = (req, res) => {
